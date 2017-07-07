@@ -89,3 +89,10 @@ ENV/
 
 # Rope project settings
 .ropeproject
+todo
+Source/data.csv
+Source/refs.json
+.idea/
+.idea/vcs.xml
+ConvertedClasses.csv
+CleanedData.csv
