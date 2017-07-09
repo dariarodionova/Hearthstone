@@ -20,7 +20,7 @@ print(data[:5,:5])
 
 X = data[:,:-1]
 y = data[:,-1]
-X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.4)
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.3)
 X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size = 0.3)
 
 n_splits = 10
@@ -41,16 +41,22 @@ models = []
 names = []
 names = ["KNN","LogisticR","LDA", "Naive","SVM","TREE"]
 models.append((names[0], KNeighborsClassifier()))
-models.append((names[1], LogisticRegression()))
-models.append((names[2], LinearDiscriminantAnalysis()))
+#models.append((names[1], LogisticRegression())) - takes too long
+#models.append((names[2], LinearDiscriminantAnalysis())) - variables collinear
 models.append((names[3], GaussianNB()))
-models.append((names[4], SVC()))
-models.append((names[5], DecisionTreeClassifier()))
+#models.append((names[4], SVC())) - takes too long
+models.append((names[5], DecisionTreeClassifier()))  # --underfits the data
 results = []
 
-bar = pyprind.ProgBar(len(models), monitor=True)
-for name, model in models:
+'''for name, model in models:
     cv_results = cross_val_score(model, X_train, y_train, cv=kfold, scoring="accuracy")
     results.append(cv_results)
-    print("%s: %f (%f)" % (name, cv_results.mean(), cv_results.std()))
-    bar.update()
+    print("\n%s: %f (%f)" % (name, cv_results.mean(), cv_results.std()))
+'''
+
+results = []
+m = X_train.shape[0]
+for i in range (1, 10):
+    cv_results = cross_val_score(DecisionTreeClassifier(), X_train[:int(m/i),:], y_train[:int(m/i)], cv=kfold)
+    results.append(cv_results)
+    print("\n%s: %f (%f)" % (i, cv_results.mean(), cv_results.std()))
