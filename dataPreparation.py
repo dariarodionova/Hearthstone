@@ -21,25 +21,22 @@ allAppearingCards = np.sort(np.unique(cleanedData[:, 1:].flatten()))
 print(allAppearingCards)
 
 #-----creating classes
-item = np.zeros(uniqueArchetypes.shape)
-classes = np.identity(uniqueArchetypes.shape[0])
-namedClasses = np.column_stack((uniqueArchetypes, classes))
+namedClasses = uniqueArchetypes.copy()
 namedClassesDf = pd.DataFrame(namedClasses)
-#namedClassesDf.to_csv("NamedClasses.csv")
+namedClassesDf.to_csv("NamedClasses.csv")
 print("\nNamed classes :\n", namedClasses)
 
 #-----applying classes
 m = cleanedData.shape[0]
 numCls = uniqueArchetypes.shape[0]
 
-convertedClasses = np.zeros((m, numCls))
+convertedClasses = np.zeros((m))
 for i in range(0,m):
-   convertedClasses[i,np.argwhere(namedClasses[:,0]==cleanedData[i,0])] = 1
+   convertedClasses[i] = np.argwhere(namedClasses[:]==cleanedData[i,0])
 
-print(convertedClasses[:5,:])
 convertedClassesDf = pd.DataFrame(convertedClasses)
-#convertedClassesDf.to_csv("ConvertedClasses.csv")
+convertedClassesDf.to_csv("ConvertedClasses.csv")
 
 finalData = np.column_stack((cleanedData[:,1:], convertedClasses))
-#pd.DataFrame(finalData).to_csv("FinalData.csv")
+pd.DataFrame(finalData).to_csv("FinalData.csv", index=False, index_label=False)
 print(finalData.shape)
