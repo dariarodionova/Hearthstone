@@ -1,11 +1,6 @@
 import numpy as np
 import pandas as pd
 from pprint import pprint
-import plotly.plotly as py
-from plotly.graph_objs import *
-
-data = pd.read_csv("FinalData.csv").values
-print(data[:5,:5])
 
 x1 = [5,4,2,5,1,2]
 x2 = [4,2,4,1,1,2]
