@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 from pprint import pprint
+import json
+from sklearn.utils import shuffle
 
 x1 = [5,4,2,5,1,2]
 x2 = [4,2,4,1,1,2]
@@ -57,8 +59,22 @@ tree = recursiveSplit(X,y)
 pprint(tree)
 
 
+seed = 256
 
+data = pd.read_csv("FinalData.csv").values
+data = shuffle(data, random_state=seed)
 
+X = data[:,:-1]
+y = data[:,-1]
+tree= recursiveSplit(X,y)
+
+def default(obj):
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()
+    raise TypeError('Not serializable')
+
+with open('data.json','w') as fl:
+    json.dump(tree, fl, default=default)
 
 
 
